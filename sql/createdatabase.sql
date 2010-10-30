@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2010 at 07:37 PM
+-- Generation Time: Oct 30, 2010 at 08:11 PM
 -- Server version: 5.1.30
 -- PHP Version: 5.2.6
 
@@ -45,10 +45,10 @@ CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(500) NOT NULL,
   `password` varchar(40) NOT NULL COMMENT 'md5ed',
-  `firstname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `lastname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `isAdmin` int(1) NOT NULL,
-  `isSokhanran` int(1) NOT NULL,
+  `firstname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `lastname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `isAdmin` int(1) NOT NULL DEFAULT '0',
+  `isSokhanran` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
