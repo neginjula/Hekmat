@@ -15,7 +15,9 @@ class Site extends Controller {
 	}
 	
 	function index() {
-		echo "site home page";
+		$data['title'] = "حکمت | صفحه ی اصلی";
+		$data['mainView'] = "site/main";
+		$this->load->view("template", $data);
 	}
 
 }
