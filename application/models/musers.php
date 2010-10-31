@@ -14,7 +14,25 @@ class MUsers extends Model {
 		parent::Model();
 	}
 	
-	function createUser($data) { //adds a new user into the database
+	function checkForDuplicateEmail($email){ 
+		//emails are uniqe in the database
+		//returns true: if a duplicate exists
+		//returns false: if this is a new email address
+		
+		$this->db->select("email");
+		$this->db->limit(1);
+		$this->db->where("email", $email);
+		$q = $this->db->get("users");
+		if($q->num_rows() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	function createUser($data) { 
+		//adds a new user into the database
 		//arguments
 		//$data is an array()
 		/*

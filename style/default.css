@@ -3,3 +3,10 @@ body{
 	text-align:right;
 	font-family:Tahoma;
 }
+
+div .error{
+	width:400px;
+	height:100px;
+	color:#E64D6B;
+	background-color:gray;
+}
