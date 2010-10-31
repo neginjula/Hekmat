@@ -16,7 +16,30 @@ class Site extends Controller {
 		session_start();
 	}
 	
+	function _isUserLoggedIn(){
+		//session values to be checked
+		//$_SESSION['user']['id']
+		//$_SESSION['user']['email']
+		//$_SESSION['user']['firstname']
+		
+		//if values are not set
+		if(	!isset($_SESSION['user']['id'])
+		||	!isset($_SESSION['user']['email'])
+		||	!isset($_SESSION['user']['firstname']))
+		{
+			return false;
+		}
+		
+		//if id is not good!
+		if($_SESSION['user']['id'] < 1){
+			return false;
+		}
+		
+		return true;
+	}
+	
 	function index() {
+		$data['isLoggedIn'] = $this->_isUserLoggedIn();
 		$data['title'] = "حکمت | صفحه ی اصلی";
 		$data['mainView'] = "site/main";
 		$this->load->view("template", $data);
