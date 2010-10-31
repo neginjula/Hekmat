@@ -46,9 +46,10 @@ class User extends Controller {
 	
 	function index() {
 		$isLoggedIn = $this->_isUserLoggedIn();
-		echo "users main page\n";
 		if($isLoggedIn){
-			echo "user is logged in: " . print_r($_SESSION['user']);
+			$data['title'] = "حکمت | صفحه‌ی اصلی کاربر";
+			$data['mainView'] = "user/main";
+			$this->load->view("template", $data);
 		}
 		else {
 			echo "user is not logged in";
@@ -114,7 +115,7 @@ class User extends Controller {
 			$_POST['password'] = md5($_POST['password']); //this is wrong and totally temporary. hashing of the password must get done with javascript in the view
 			$databaseResult = $this->MUsers->checkUser($_POST);
 			
-			if($databaseResult != false && is_array($databaseResult){
+			if($databaseResult != false && is_array($databaseResult)){
 				//user credentials are valid
 				//go to main user page
 				unset($_SESSION['login_error']);
