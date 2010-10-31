@@ -4,9 +4,16 @@ body{
 	font-family:Tahoma;
 }
 
-div .error{
+#error{
 	width:400px;
 	height:100px;
 	color:#E64D6B;
+	background-color:gray;
+}
+
+#success{
+	width:400px;
+	height:100px;
+	color:#3CF774;
 	background-color:gray;
 }

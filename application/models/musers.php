@@ -62,7 +62,7 @@ class MUsers extends Model {
 		//if inputs are empty
 		if(	!is_string($data['email'])
 		||	!is_string($data['password'])
-		||	!is_string($data['fisrtname'])
+		||	!is_string($data['firstname'])
 		||	!is_string($data['lastname']))
 		{
 			return false;
@@ -71,8 +71,8 @@ class MUsers extends Model {
 		//check if strigns are more than 1 in lenth
 		if(	strlen($data['email']) <= 1
 		||	strlen($data['password']) <= 1
-		||	strlen($data['fisrtname']) <= 1
-		||	strlen($data['lastname'])) <= 1
+		||	strlen($data['firstname']) <= 1
+		||	strlen($data['lastname']) <= 1)
 		{
 			return false;
 		}
@@ -87,7 +87,7 @@ class MUsers extends Model {
 		$validatedInput = array();
 		$validatedInput['email'] = mysql_real_escape_string($data['email']);
 		$validatedInput['password'] = mysql_real_escape_string($data['password']);
-		$validatedInput['fisrtname'] = mysql_real_escape_string($data['firstname']);
+		$validatedInput['firstname'] = mysql_real_escape_string($data['firstname']);
 		$validatedInput['lastname'] = mysql_real_escape_string($data['lastname']);
 		//adding isAdmin and isSokhanran
 		$validatedInput['isAdmin'] = 0;
