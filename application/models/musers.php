@@ -30,7 +30,7 @@ class MUsers extends Model {
 		//return value
 		//false is returned in case of error
 		//true is returned in case of success
-		
+		//because we have javascript validation on forms that specifies what is wrong with user input, we do not need to specify the problem here.
 		
 		//if inputs are not set
 		if(	!isset($data['email'])
@@ -50,18 +50,35 @@ class MUsers extends Model {
 			return false;
 		}
 		
-		//TO-DO:check id strigns are more than 1 in lenth
-		//TO-DO:check for email regular expression
+		//check if strigns are more than 1 in lenth
+		if(	strlen($data['email']) <= 1
+		||	strlen($data['password']) <= 1
+		||	strlen($data['fisrtname']) <= 1
+		||	strlen($data['lastname'])) <= 1
+		{
+			return false;
+		}
 		
+		//check for email regular expression
+		//for more info on the pattern visit : http://fightingforalostcause.net/misc/2006/compare-email-regex.php
+		$pattern = "/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i";
+		if(!preg_match($pattern, $data['email'])){
+			return false;
+		}
 		
 		$validatedInput = array();
-		
 		$validatedInput['email'] = mysql_real_escape_string($data['email']);
 		$validatedInput['password'] = mysql_real_escape_string($data['password']);
 		$validatedInput['fisrtname'] = mysql_real_escape_string($data['firstname']);
 		$validatedInput['lastname'] = mysql_real_escape_string($data['lastname']);
+		//adding isAdmin and isSokhanran
+		$validatedInput['isAdmin'] = 0;
+		$validatedInput['isSokhanran'] = 0;
 		
-		//TO-DO:insert into database
+		//insert into database
+		$result = $this->db->insert('users',$validatedInput);
+		if($result == 1){
+			return true;
+		}
 	}
-
 }

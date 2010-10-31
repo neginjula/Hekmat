@@ -19,5 +19,5 @@ class Site extends Controller {
 		$data['mainView'] = "site/main";
 		$this->load->view("template", $data);
 	}
-
+	
 }
