@@ -99,4 +99,32 @@ class MUsers extends Model {
 			return true;
 		}
 	}
+	
+	function checkUser($data){
+		//arguments
+		//$data{email, password}
+		//returns an array of {id, email, firstname} in case of valid credentials
+		//returns false in case of invalid credentials
+		$validatedInput = array();
+		$validatedInput['email'] = mysql_real_escape_string($data['email']);
+		$validatedInput['password'] = mysql_real_escape_string($data['password']);
+		
+		$this->db->select("id, email, password, firstname");
+		$this->db->limit(1);
+		$this->db->where('email', $validatedInput['email']);
+		$this->db->where('password', $validatedInput['password']);
+		
+		$q = $this->db->get('users');
+		
+		if($q->num_rows() > 0){
+			$result = $q->row();
+			$returnArray = array();
+			$returnArray['id'] = $result->id;
+			$returnArray['email'] = $result->email;
+			$returnArray['firstname'] = $result->firstname;
+		}
+		else{
+			return false;
+		}
+	}
 }
