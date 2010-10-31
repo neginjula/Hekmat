@@ -122,6 +122,8 @@ class MUsers extends Model {
 			$returnArray['id'] = $result->id;
 			$returnArray['email'] = $result->email;
 			$returnArray['firstname'] = $result->firstname;
+			
+			return $returnArray;
 		}
 		else{
 			return false;

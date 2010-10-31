@@ -8,6 +8,14 @@
 ?>
 
 <?php
+	if(isset($_SESSION['login_error'])){
+		echo "<div id='error'>";
+		echo $_SESSION['login_error'];
+		echo "</div>\n";
+	}
+?>
+
+<?php
 
 	$this->load->helper("form");
 	

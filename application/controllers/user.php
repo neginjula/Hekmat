@@ -68,7 +68,72 @@ class User extends Controller {
 	}
 	
 	function checkUser(){
+		unset($_SESSION['signup_success']);
+		$isLoggedIn = $this->_isUserLoggedIn();
+		if($isLoggedIn){//already logged in
+			redirect('user/index', 'refresh');
+		}
+		else{
+			if(	!isset($_POST['email'])
+			||	!isset($_POST['password']))
+			{
+				//to prevent direct access to this method
+				redirect('user/login', "refresh");
+			}
+		}
 		
+		$this->load->model("MUsers");
+		
+		unset($_SESSION['login_error']); //login_error is shown in login view if an error occurs, when user is trying a new login we have no errors
+		$_SESSION['login_error'] = "";
+		//validate data. maybe javascript is disabled!
+		//if post data are not empty
+		if(strlen($_POST['email']) < 1){
+			$_SESSION['login_error'] = $_SESSION['login_error'] . "پست الکترونیکی خالیست.</br>\n";
+		}
+		if(strlen($_POST['password']) < 1){
+			$_SESSION['login_error'] = $_SESSION['login_error'] . "رمز عبور خالیست.</br>\n";
+		}
+		
+		//check if this is a valid email
+		//for more info on the pattern visit : http://fightingforalostcause.net/misc/2006/compare-email-regex.php
+		$pattern = "/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i";
+		if(!preg_match($pattern, $_POST['email'])){
+			$_SESSION['login_error'] = $_SESSION['login_error'] . "پست الکترونیکی معتبر نیست.</br>\n";
+		}
+		// finished validation
+		
+		if(isset($_SESSION['login_error']) && $_SESSION['login_error'] != ""){
+			//if input has some problems and user must get notified
+			$data['title'] = "حکمت | ورود کاربر";
+			$data['mainView'] = "user/login";
+			$this->load->view("template", $data);
+		}
+		else{
+			//try to check data with database
+			$_POST['password'] = md5($_POST['password']); //this is wrong and totally temporary. hashing of the password must get done with javascript in the view
+			$databaseResult = $this->MUsers->checkUser($_POST);
+			
+			if($databaseResult != false && is_array($databaseResult){
+				//user credentials are valid
+				//go to main user page
+				unset($_SESSION['login_error']);
+				$_SESSION['user']['id'] = $databaseResult['id'];
+				$_SESSION['user']['email'] = $databaseResult['email'];
+				$_SESSION['user']['firstname'] = $databaseResult['firstname'];
+				$data['title'] = "حکمت | صفحه‌ی اصلی کاربر";
+				$data['mainView'] = "user/main";
+				$this->load->view("template", $data);
+			}
+			elseif ($databaseResult == false){
+				//user credentials are not valid
+				unset($_SESSION['login_error']);
+				$_SESSION['login_error'] = "پست الکترونیکی یا رمز عبور اشتباه است.\n";
+				$data['title'] = "حکمت | ورود کاربر";
+				$data['mainView'] = "user/login";
+				$this->load->view("template", $data);
+			}
+		}
 	}
 	
 	function signup(){
